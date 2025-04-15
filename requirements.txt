@@ -1,0 +1,7 @@
+flask
+pandas
+numpy
+openpyxl
+python-dotenv
+werkzeug
+office365-rest-python-client
