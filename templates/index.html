@@ -85,199 +85,193 @@
                 </div>
             </div>
 
-            <!-- Action Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 auto-rows-fr">
-                <!-- Upload Prospec Gerem -->
+            <!-- Prospec Gerem Section (Full Width) -->
+            <div class="mb-10">
                 <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                    <div class="p-6 flex flex-col h-full">
+                    <div class="p-6">
                         <div class="mb-4 flex items-center">
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
                                 <i class="fas fa-file-upload"></i>
                             </div>
                             <h2 class="ml-3 text-xl font-semibold">Prospec Gerem</h2>
                         </div>
-                        <p class="text-gray-600 text-sm mb-4">Faça upload da planilha inicial para iniciar o processo de matching</p>
+                        <p class="text-gray-600 text-sm mb-4">Faça upload da planilha inicial para consolidação no SharePoint. Registros duplicados são automaticamente tratados.</p>
                         
-                        <form action="/upload_prospec" method="post" enctype="multipart/form-data" class="w-full flex-1 flex flex-col">
-                            <div class="upload-animation bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center mb-4 cursor-pointer hover:border-brand-400">
-                                <label for="prospec-upload" class="cursor-pointer">
-                                    <div class="text-gray-500">
-                                        <i class="fas fa-cloud-upload-alt text-2xl mb-2"></i>
-                                        <p class="text-sm font-medium">Arraste ou clique para selecionar</p>
-                                        <p class="text-xs text-gray-400 mt-1">XLSX, XLS, CSV (max. 10MB)</p>
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex-1">
+                                <form action="/upload_prospec" method="post" enctype="multipart/form-data" class="w-full">
+                                    <div class="upload-animation bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center mb-4 cursor-pointer hover:border-brand-400">
+                                        <label for="prospec-upload" class="cursor-pointer">
+                                            <div class="text-gray-500">
+                                                <i class="fas fa-cloud-upload-alt text-2xl mb-2"></i>
+                                                <p class="text-sm font-medium">Arraste ou clique para selecionar</p>
+                                                <p class="text-xs text-gray-400 mt-1">XLSX, XLS, CSV (max. 10MB)</p>
+                                            </div>
+                                            <input id="prospec-upload" name="file" type="file" class="hidden" accept=".xlsx,.xls,.csv" />
+                                        </label>
                                     </div>
-                                    <input id="prospec-upload" name="file" type="file" class="hidden" accept=".xlsx,.xls,.csv" />
-                                </label>
-                            </div>
-                            
-                            <div id="prospec-file-info" class="hidden mb-4">
-                                <div class="flex items-center bg-gray-50 p-2 rounded-lg">
-                                    <i class="fas fa-file-excel text-brand-600 mr-2"></i>
-                                    <div class="overflow-hidden flex-1">
-                                        <p id="prospec-file-name" class="text-sm font-medium truncate">arquivo.xlsx</p>
-                                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-                                            <div class="bg-brand-500 h-1.5 rounded-full progress-bar" style="width: 100%"></div>
+                                    
+                                    <div id="prospec-file-info" class="hidden mb-4">
+                                        <div class="flex items-center bg-gray-50 p-2 rounded-lg">
+                                            <i class="fas fa-file-excel text-brand-600 mr-2"></i>
+                                            <div class="overflow-hidden flex-1">
+                                                <p id="prospec-file-name" class="text-sm font-medium truncate">arquivo.xlsx</p>
+                                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                                                    <div class="bg-brand-500 h-1.5 rounded-full progress-bar" style="width: 100%"></div>
+                                                </div>
+                                            </div>
+                                            <button type="button" id="prospec-remove" class="ml-2 text-gray-400 hover:text-red-500">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <button type="button" id="prospec-remove" class="ml-2 text-gray-400 hover:text-red-500">
-                                        <i class="fas fa-times"></i>
+                                    
+                                    <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
+                                        <i class="fas fa-upload mr-2"></i>
+                                        <span>Enviar Arquivo</span>
                                     </button>
-                                </div>
+                                </form>
                             </div>
                             
-                            <div class="mt-auto">
-                                <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                    <i class="fas fa-upload mr-2"></i>
-                                    <span>Enviar Arquivo</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- Download Matches -->
-                <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                    <div class="p-6 flex flex-col h-full">
-                        <div class="mb-4 flex items-center">
-                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                <i class="fas fa-file-download"></i>
-                            </div>
-                            <h2 class="ml-3 text-xl font-semibold">Matches</h2>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4">Baixe os possíveis matches encontrados para validação</p>
-                        
-                        <div class="flex items-center bg-gray-50 rounded-lg p-4 mb-4 flex-1">
-                            <div class="flex-1 mr-4">
-                                <p class="text-sm font-medium">Matches encontrados</p>
-                                <p class="text-xs text-gray-500 mt-1">Última atualização: Automática</p>
-                            </div>
-                            <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600">
-                                <i class="fas fa-check"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-auto">
-                            <a href="/download_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                <i class="fas fa-download mr-2"></i>
-                                <span>Baixar Matches</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Upload Validated Excel -->
-                <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                    <div class="p-6 flex flex-col h-full">
-                        <div class="mb-4 flex items-center">
-                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <h2 class="ml-3 text-xl font-semibold">Excel Validado</h2>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4">Envie a planilha com os matches validados manualmente</p>
-                        
-                        <form action="/upload_validated" method="post" enctype="multipart/form-data" class="w-full flex-1 flex flex-col">
-                            <div class="upload-animation bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center mb-4 cursor-pointer hover:border-brand-400">
-                                <label for="validated-upload" class="cursor-pointer">
-                                    <div class="text-gray-500">
-                                        <i class="fas fa-cloud-upload-alt text-2xl mb-2"></i>
-                                        <p class="text-sm font-medium">Arraste ou clique para selecionar</p>
-                                        <p class="text-xs text-gray-400 mt-1">XLSX, XLS, CSV (max. 10MB)</p>
-                                    </div>
-                                    <input id="validated-upload" name="file" type="file" class="hidden" accept=".xlsx,.xls,.csv" />
-                                </label>
-                            </div>
-                            
-                            <div id="validated-file-info" class="hidden mb-4">
-                                <div class="flex items-center bg-gray-50 p-2 rounded-lg">
-                                    <i class="fas fa-file-excel text-brand-600 mr-2"></i>
-                                    <div class="overflow-hidden flex-1">
-                                        <p id="validated-file-name" class="text-sm font-medium truncate">arquivo.xlsx</p>
-                                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-                                            <div class="bg-brand-500 h-1.5 rounded-full progress-bar" style="width: 100%"></div>
+                            <!-- SharePoint Records Info -->
+                            <div class="flex-1 bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold mb-4">Dados Consolidados no SharePoint</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mr-4">
+                                            <i class="fas fa-database"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Total de Registros</p>
+                                            <p class="text-xl font-semibold" id="total-records">-</p>
                                         </div>
                                     </div>
-                                    <button type="button" id="validated-remove" class="ml-2 text-gray-400 hover:text-red-500">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+                                    
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600 mr-4">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Última Atualização</p>
+                                            <p class="text-base font-medium" id="last-update">-</p>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
-                            
-                            <div class="mt-auto">
-                                <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                    <i class="fas fa-upload mr-2"></i>
-                                    <span>Enviar Validados</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- Download Final Matches -->
-                <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                    <div class="p-6 flex flex-col h-full">
-                        <div class="mb-4 flex items-center">
-                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <h2 class="ml-3 text-xl font-semibold">Matches Finais</h2>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4">Baixe os resultados finais após validação</p>
-                        
-                        <div class="flex items-center bg-gray-50 rounded-lg p-4 mb-4 flex-1">
-                            <div class="flex-1 mr-4">
-                                <p class="text-sm font-medium">Matches finalizados</p>
-                                <p class="text-xs text-gray-500 mt-1">Última atualização: Automática</p>
-                            </div>
-                            <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600">
-                                <i class="fas fa-check"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-auto">
-                            <a href="/download_final_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                <i class="fas fa-download mr-2"></i>
-                                <span>Baixar Finais</span>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Stats & Info Section -->
-            <div class="mt-16 bg-white rounded-xl shadow-card p-6">
-                <h2 class="text-xl font-semibold mb-4">Estatísticas</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mr-4">
-                                <i class="fas fa-database"></i>
+
+            <!-- Remaining Cards in Grid -->
+            <div class="mb-16">
+                <h2 class="text-2xl font-semibold mb-6">Processamento de Matches</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-fr">
+                    <!-- Download Matches -->
+                    <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
+                        <div class="p-6 flex flex-col h-full">
+                            <div class="mb-4 flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                                    <i class="fas fa-file-download"></i>
+                                </div>
+                                <h2 class="ml-3 text-xl font-semibold">Matches</h2>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Total de Registros</p>
-                                <p class="text-xl font-semibold">-</p>
+                            <p class="text-gray-600 text-sm mb-4">Baixe os possíveis matches encontrados para validação</p>
+                            
+                            <div class="flex items-center bg-gray-50 rounded-lg p-4 mb-4 flex-1">
+                                <div class="flex-1 mr-4">
+                                    <p class="text-sm font-medium">Matches encontrados</p>
+                                    <p class="text-xs text-gray-500 mt-1">Última atualização: Automática</p>
+                                </div>
+                                <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-auto">
+                                <a href="/download_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
+                                    <i class="fas fa-download mr-2"></i>
+                                    <span>Baixar Matches</span>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600 mr-4">
-                                <i class="fas fa-check-double"></i>
+                    
+                    <!-- Upload Validated Excel -->
+                    <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
+                        <div class="p-6 flex flex-col h-full">
+                            <div class="mb-4 flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h2 class="ml-3 text-xl font-semibold">Excel Validado</h2>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Matches Encontrados</p>
-                                <p class="text-xl font-semibold">-</p>
-                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Envie a planilha com os matches validados manualmente</p>
+                            
+                            <form action="/upload_validated" method="post" enctype="multipart/form-data" class="w-full flex-1 flex flex-col">
+                                <div class="upload-animation bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center mb-4 cursor-pointer hover:border-brand-400">
+                                    <label for="validated-upload" class="cursor-pointer">
+                                        <div class="text-gray-500">
+                                            <i class="fas fa-cloud-upload-alt text-2xl mb-2"></i>
+                                            <p class="text-sm font-medium">Arraste ou clique para selecionar</p>
+                                            <p class="text-xs text-gray-400 mt-1">XLSX, XLS, CSV (max. 10MB)</p>
+                                        </div>
+                                        <input id="validated-upload" name="file" type="file" class="hidden" accept=".xlsx,.xls,.csv" />
+                                    </label>
+                                </div>
+                                
+                                <div id="validated-file-info" class="hidden mb-4">
+                                    <div class="flex items-center bg-gray-50 p-2 rounded-lg">
+                                        <i class="fas fa-file-excel text-brand-600 mr-2"></i>
+                                        <div class="overflow-hidden flex-1">
+                                            <p id="validated-file-name" class="text-sm font-medium truncate">arquivo.xlsx</p>
+                                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                                                <div class="bg-brand-500 h-1.5 rounded-full progress-bar" style="width: 100%"></div>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="validated-remove" class="ml-2 text-gray-400 hover:text-red-500">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-auto">
+                                    <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
+                                        <i class="fas fa-upload mr-2"></i>
+                                        <span>Enviar Validados</span>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="flex items-center">
-                            <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 mr-4">
-                                <i class="fas fa-percentage"></i>
+                    
+                    <!-- Download Final Matches -->
+                    <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
+                        <div class="p-6 flex flex-col h-full">
+                            <div class="mb-4 flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <h2 class="ml-3 text-xl font-semibold">Matches Finais</h2>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Taxa de Sucesso</p>
-                                <p class="text-xl font-semibold">-</p>
+                            <p class="text-gray-600 text-sm mb-4">Baixe os resultados finais após validação</p>
+                            
+                            <div class="flex items-center bg-gray-50 rounded-lg p-4 mb-4 flex-1">
+                                <div class="flex-1 mr-4">
+                                    <p class="text-sm font-medium">Matches finalizados</p>
+                                    <p class="text-xs text-gray-500 mt-1">Última atualização: Automática</p>
+                                </div>
+                                <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-auto">
+                                <a href="/download_final_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
+                                    <i class="fas fa-download mr-2"></i>
+                                    <span>Baixar Finais</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -327,6 +321,26 @@
         validatedRemove.addEventListener('click', function() {
             validatedUpload.value = '';
             validatedFileInfo.classList.add('hidden');
+        });
+        
+        // Fetch statistics about SharePoint consolidation
+        function fetchSharePointStats() {
+            // This would normally be an API call to get the current stats
+            // For now, we'll just simulate it with placeholder values
+            document.getElementById('total-records').textContent = "Carregando...";
+            document.getElementById('last-update').textContent = "Carregando...";
+            
+            // Simulated API call
+            setTimeout(() => {
+                // In a real app, this would come from the server
+                document.getElementById('total-records').textContent = "327";
+                document.getElementById('last-update').textContent = new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR');
+            }, 1000);
+        }
+        
+        // Call on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchSharePointStats();
         });
     </script>
 </body>
