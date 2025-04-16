@@ -745,6 +745,52 @@ def download_uploaded_file(filename):
         print(f"Erro detalhado: {str(e)}")
         return redirect(url_for('index'))
 
+@app.route('/download_template')
+def download_template():
+    """Rota para download do template vazio para upload"""
+    # Verificar se o usuário está logado
+    if 'sharepoint_email' not in session:
+        return redirect(url_for('login'))
+    
+    try:
+        # Criar um DataFrame vazio com as colunas necessárias
+        df_template = pd.DataFrame(columns=["id", "data", "empresa", "nome_capital", "cnpj"])
+        
+        # Criar um arquivo Excel na memória
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df_template.to_excel(writer, index=False)
+        
+        output.seek(0)
+        
+        # Registrar a atividade no arquivo de logs
+        try:
+            sp_client = get_sharepoint_client()
+            if sp_client:
+                current_user = session['sharepoint_email']
+                log_details = "Download do template vazio para upload"
+                sp_client.log_activity(
+                    SHAREPOINT_LOGS_PATH,
+                    current_user,
+                    "download_template",
+                    log_details
+                )
+        except Exception as log_error:
+            print(f"Erro ao registrar log de download do template: {str(log_error)}")
+        
+        # Enviar o arquivo para download
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name="template_upload.xlsx",
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        
+    except Exception as e:
+        flash(f'Erro ao gerar o template: {str(e)}')
+        print(f"Erro detalhado: {str(e)}")
+        return redirect(url_for('index'))
+
 @app.route('/download_consolidated')
 def download_consolidated():
     """Rota para download do arquivo consolidado"""
