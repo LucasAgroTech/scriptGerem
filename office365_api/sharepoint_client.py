@@ -309,3 +309,96 @@ class SharePointClient:
             return None
         except Exception as e:
             raise Exception(f"Erro ao obter categorização: {str(e)}")
+    
+    def log_activity(self, log_file_path, user, action, details=None):
+        """
+        Registra uma atividade no arquivo de logs.
+        
+        Args:
+            log_file_path: Caminho relativo do arquivo de logs no SharePoint
+            user: Usuário que realizou a ação
+            action: Tipo de ação realizada
+            details: Detalhes adicionais (opcional)
+            
+        Returns:
+            bool: True se o registro foi bem-sucedido
+        """
+        try:
+            import datetime
+            import pandas as pd
+            import io
+            
+            timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            
+            # Criar um novo registro de log
+            log_entry = {
+                'timestamp': timestamp,
+                'user': user,
+                'action': action,
+                'details': details if details else ''
+            }
+            
+            # Verificar se o arquivo de logs já existe
+            try:
+                # Tentar baixar o arquivo existente
+                file_content = self.download_file(log_file_path)
+                
+                # Ler o arquivo existente
+                excel_file = io.BytesIO(file_content)
+                df_logs = pd.read_excel(excel_file)
+                
+                # Adicionar o novo registro
+                df_logs = pd.concat([df_logs, pd.DataFrame([log_entry])], ignore_index=True)
+                
+            except Exception as e:
+                print(f"Arquivo de logs não encontrado, criando novo: {str(e)}")
+                # Criar um novo DataFrame com o registro
+                df_logs = pd.DataFrame([log_entry])
+            
+            # Salvar o DataFrame atualizado em um buffer
+            output = io.BytesIO()
+            df_logs.to_excel(output, index=False)
+            output.seek(0)
+            
+            # Fazer upload do arquivo atualizado
+            self.upload_file(output.getvalue(), log_file_path)
+            
+            print(f"Log registrado com sucesso: {action} por {user} em {timestamp}")
+            return True
+            
+        except Exception as e:
+            print(f"Erro ao registrar log: {str(e)}")
+            return False
+    
+    def get_latest_log(self, log_file_path):
+        """
+        Obtém o registro de log mais recente.
+        
+        Args:
+            log_file_path: Caminho relativo do arquivo de logs no SharePoint
+            
+        Returns:
+            dict: Registro de log mais recente ou None se não houver registros
+        """
+        try:
+            # Baixar o arquivo de logs
+            file_content = self.download_file(log_file_path)
+            
+            # Ler o arquivo
+            excel_file = io.BytesIO(file_content)
+            df_logs = pd.read_excel(excel_file)
+            
+            if len(df_logs) == 0:
+                return None
+            
+            # Ordenar por timestamp (mais recente primeiro)
+            df_logs['timestamp'] = pd.to_datetime(df_logs['timestamp'])
+            df_logs = df_logs.sort_values('timestamp', ascending=False)
+            
+            # Retornar o registro mais recente como dicionário
+            latest_log = df_logs.iloc[0].to_dict()
+            return latest_log
+            
+        except Exception as e:
+            print(f"Erro ao obter último log: {str(e)}")
+            return None

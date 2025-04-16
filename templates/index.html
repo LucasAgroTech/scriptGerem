@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Matching</title>
+    <title>Dashboard</title>
+    <link rel="icon" href="/static/img/logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -57,7 +58,7 @@
             <div class="inline-block mb-4">
                 <img src="/static/img/logo.png" alt="Logo" class="w-20 h-20 object-contain">
             </div>
-            <h1 class="text-4xl font-bold tracking-tight">Sistema de Matching</h1>
+            <h1 class="text-4xl font-bold tracking-tight">Matching System Embrapii</h1>
             <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
                 Gerencie suas planilhas e encontre matches de forma eficiente
             </p>
@@ -93,7 +94,7 @@
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
                                 <i class="fas fa-file-upload"></i>
                             </div>
-                            <h2 class="ml-3 text-xl font-semibold">Prospec Gerem</h2>
+                            <h2 class="ml-3 text-xl font-semibold">Prospecção Gerem</h2>
                         </div>
                         <p class="text-gray-600 text-sm mb-4">Faça upload da planilha inicial para consolidação no SharePoint. Registros duplicados são automaticamente tratados.</p>
                         
@@ -135,8 +136,15 @@
                             
                             <!-- SharePoint Records Info -->
                             <div class="flex-1 bg-gray-50 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold mb-4">Dados Consolidados no SharePoint</h3>
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h3 class="text-lg font-semibold">Planilha consolidada</h3>
+                                        <a href="/download_consolidated" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-2 px-3 rounded-lg hover:from-blue-600 hover:to-blue-800 transition duration-300 font-medium flex items-center justify-center text-sm">
+                                            <i class="fas fa-download mr-2"></i>
+                                            <span>Download</span>
+                                        </a>
+                                    </div>
                                 <div class="space-y-4">
+                                    <!-- Total de Registros -->
                                     <div class="flex items-center">
                                         <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mr-4">
                                             <i class="fas fa-database"></i>
@@ -147,16 +155,60 @@
                                         </div>
                                     </div>
                                     
+                                    <!-- Última Atualização e Atualizado por na mesma linha, mais próximos -->
                                     <div class="flex items-center">
                                         <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600 mr-4">
                                             <i class="fas fa-clock"></i>
                                         </div>
-                                        <div>
+                                        <div class="mr-6">
                                             <p class="text-sm text-gray-500">Última Atualização</p>
                                             <p class="text-base font-medium" id="last-update">-</p>
                                         </div>
+                                        <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 mr-4">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Atualizado por</p>
+                                            <p class="text-base font-medium" id="last-update-by">-</p>
+                                        </div>
                                     </div>
-                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Accordion para Arquivos Enviados -->
+                        <div class="mt-6">
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <button id="uploaded-files-toggle" class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600 mr-3">
+                                            <i class="fas fa-history"></i>
+                                        </div>
+                                        <span class="font-medium">Arquivos Enviados</span>
+                                    </div>
+                                    <i id="uploaded-files-icon" class="fas fa-chevron-down text-gray-500 transition-transform"></i>
+                                </button>
+                                
+                                <div id="uploaded-files-content" class="hidden p-4 border-t border-gray-200">
+                                    <div class="overflow-x-auto">
+                                        <table id="uploaded-files-table" class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome do Arquivo</th>
+                                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de Upload</th>
+                                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuário</th>
+                                                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200" id="uploaded-files-tbody">
+                                                <tr>
+                                                    <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">
+                                                        Carregando arquivos...
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -266,6 +318,7 @@
                                     <i class="fas fa-check"></i>
                                 </div>
                             </div>
+
                             
                             <div class="mt-auto">
                                 <a href="/download_final_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
@@ -281,7 +334,7 @@
         
         <!-- Footer -->
         <footer class="mt-16 text-center text-gray-500 text-sm">
-            <p>&copy; 2025 - Sistema de Matching</p>
+            <p>&copy; 2025 - Matching System Embrapii</p>
             <p class="mt-1">Versão 1.0.0</p>
         </footer>
     </div>
@@ -325,22 +378,152 @@
         
         // Fetch statistics about SharePoint consolidation
         function fetchSharePointStats() {
-            // This would normally be an API call to get the current stats
-            // For now, we'll just simulate it with placeholder values
             document.getElementById('total-records').textContent = "Carregando...";
             document.getElementById('last-update').textContent = "Carregando...";
+            document.getElementById('last-update-by').textContent = "Carregando...";
             
-            // Simulated API call
-            setTimeout(() => {
-                // In a real app, this would come from the server
-                document.getElementById('total-records').textContent = "327";
-                document.getElementById('last-update').textContent = new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR');
-            }, 1000);
+            // Fazer requisição AJAX para obter estatísticas
+            fetch('/api/sharepoint_stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Erro ao carregar estatísticas:', data.error);
+                        return;
+                    }
+                    
+                    document.getElementById('total-records').textContent = data.total_records;
+                    document.getElementById('last-update').textContent = data.last_update;
+                    document.getElementById('last-update-by').textContent = data.last_update_by.split('@')[0];
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    document.getElementById('total-records').textContent = "Erro ao carregar";
+                    document.getElementById('last-update').textContent = "Erro ao carregar";
+                    document.getElementById('last-update-by').textContent = "Erro ao carregar";
+                });
+        }
+        
+        // Accordion Toggle for Uploaded Files
+        const uploadedFilesToggle = document.getElementById('uploaded-files-toggle');
+        const uploadedFilesContent = document.getElementById('uploaded-files-content');
+        const uploadedFilesIcon = document.getElementById('uploaded-files-icon');
+        
+        uploadedFilesToggle.addEventListener('click', function() {
+            // Toggle visibility
+            uploadedFilesContent.classList.toggle('hidden');
+            
+            // Toggle icon rotation
+            if (uploadedFilesContent.classList.contains('hidden')) {
+                uploadedFilesIcon.classList.remove('transform', 'rotate-180');
+            } else {
+                uploadedFilesIcon.classList.add('transform', 'rotate-180');
+                // Fetch uploaded files when opening the accordion
+                fetchUploadedFiles();
+            }
+        });
+        
+        // Fetch uploaded files from API
+        function fetchUploadedFiles() {
+            const tbody = document.getElementById('uploaded-files-tbody');
+            
+            // Show loading state
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">
+                        <i class="fas fa-spinner fa-spin mr-2"></i> Carregando arquivos...
+                    </td>
+                </tr>
+            `;
+            
+            // Fetch data from API
+            fetch('/api/uploaded_files')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Erro ao carregar arquivos:', data.error);
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="px-4 py-4 text-center text-sm text-red-500">
+                                    <i class="fas fa-exclamation-circle mr-2"></i> Erro ao carregar arquivos
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    const files = data.files || [];
+                    
+                    if (files.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">
+                                    Nenhum arquivo enviado ainda
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    // Render files
+                    tbody.innerHTML = '';
+                    files.forEach(file => {
+                        const row = document.createElement('tr');
+                        row.className = 'hover:bg-gray-50';
+                        
+                        // Format user email to show only the part before @
+                        const userName = file.user.split('@')[0];
+                        
+                        row.innerHTML = `
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <i class="fas fa-file-excel text-green-500 mr-2"></i>
+                                    <span class="text-sm font-medium text-gray-900">${file.original_filename}</span>
+                                    ${file.in_sharepoint ? 
+                                        '<span class="ml-2 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">SharePoint</span>' : 
+                                        ''}
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${file.upload_date}
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${userName}
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <a href="/download_uploaded_file/${file.saved_filename}" class="text-brand-600 hover:text-brand-900 bg-brand-50 hover:bg-brand-100 py-1 px-3 rounded-lg transition-colors">
+                                        <i class="fas fa-download mr-1"></i> Local
+                                    </a>
+                                    ${file.in_sharepoint ? 
+                                        `<a href="/download_sharepoint_file/${file.saved_filename}" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 py-1 px-3 rounded-lg transition-colors">
+                                            <i class="fas fa-cloud-download-alt mr-1"></i> SharePoint
+                                        </a>` : 
+                                        ''}
+                                </div>
+                            </td>
+                        `;
+                        
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro na requisição:', error);
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="px-4 py-4 text-center text-sm text-red-500">
+                                <i class="fas fa-exclamation-circle mr-2"></i> Erro ao carregar arquivos
+                            </td>
+                        </tr>
+                    `;
+                });
         }
         
         // Call on page load
         document.addEventListener('DOMContentLoaded', function() {
             fetchSharePointStats();
+            
+            // Atualizar estatísticas a cada 60 segundos
+            setInterval(fetchSharePointStats, 60000);
         });
     </script>
 </body>
