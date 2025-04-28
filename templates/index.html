@@ -222,115 +222,62 @@
                 </div>
             </div>
 
-            <!-- Remaining Cards in Grid -->
+            <!-- Matches Prospecções (Replacing Processamento de Matches) -->
             <div class="mb-16">
-                <h2 class="text-2xl font-semibold mb-6">Processamento de Matches</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-fr">
-                    <!-- Download Matches -->
-                    <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                        <div class="p-6 flex flex-col h-full">
-                            <div class="mb-4 flex items-center">
-                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                    <i class="fas fa-file-download"></i>
-                                </div>
-                                <h2 class="ml-3 text-xl font-semibold">Matches</h2>
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
+                    <div class="p-6">
+                        <div class="mb-4 flex items-center">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                                <i class="fas fa-handshake"></i>
                             </div>
-                            <p class="text-gray-600 text-sm mb-4">Baixe os possíveis matches encontrados para validação</p>
-                            
-                            <div class="flex items-center bg-gray-50 rounded-lg p-4 mb-4 flex-1">
-                                <div class="flex-1 mr-4">
-                                    <p class="text-sm font-medium">Matches encontrados</p>
-                                    <p class="text-xs text-gray-500 mt-1">Última atualização: Automática</p>
-                                </div>
-                                <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-auto">
-                                <a href="/download_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                    <i class="fas fa-download mr-2"></i>
-                                    <span>Baixar Matches</span>
-                                </a>
-                            </div>
+                            <h2 class="ml-3 text-xl font-semibold">Matches Prospecções</h2>
                         </div>
-                    </div>
-                    
-                    <!-- Upload Validated Excel -->
-                    <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                        <div class="p-6 flex flex-col h-full">
-                            <div class="mb-4 flex items-center">
-                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <h2 class="ml-3 text-xl font-semibold">Excel Validado</h2>
-                            </div>
-                            <p class="text-gray-600 text-sm mb-4">Envie a planilha com os matches validados manualmente</p>
-                            
-                            <form action="/upload_validated" method="post" enctype="multipart/form-data" class="w-full flex-1 flex flex-col">
-                                <div class="upload-animation bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center mb-4 cursor-pointer hover:border-brand-400">
-                                    <label for="validated-upload" class="cursor-pointer">
-                                        <div class="text-gray-500">
-                                            <i class="fas fa-cloud-upload-alt text-2xl mb-2"></i>
-                                            <p class="text-sm font-medium">Arraste ou clique para selecionar</p>
-                                            <p class="text-xs text-gray-400 mt-1">XLSX, XLS, CSV (max. 10MB)</p>
+                        <p class="text-gray-600 text-sm mb-4">Inicie o processo de matching para identificar prospecções compatíveis</p>
+                        
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex-1 bg-gray-50 rounded-lg p-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mr-4">
+                                            <i class="fas fa-lightbulb"></i>
                                         </div>
-                                        <input id="validated-upload" name="file" type="file" class="hidden" accept=".xlsx,.xls,.csv" />
-                                    </label>
-                                </div>
-                                
-                                <div id="validated-file-info" class="hidden mb-4">
-                                    <div class="flex items-center bg-gray-50 p-2 rounded-lg">
-                                        <i class="fas fa-file-excel text-brand-600 mr-2"></i>
-                                        <div class="overflow-hidden flex-1">
-                                            <p id="validated-file-name" class="text-sm font-medium truncate">arquivo.xlsx</p>
-                                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
-                                                <div class="bg-brand-500 h-1.5 rounded-full progress-bar" style="width: 100%"></div>
-                                            </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Status do Processo</p>
+                                            <p class="text-xl font-semibold" id="process-status">Não iniciado</p>
                                         </div>
-                                        <button type="button" id="validated-remove" class="ml-2 text-gray-400 hover:text-red-500">
-                                            <i class="fas fa-times"></i>
-                                        </button>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600 mr-4">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-500">Última Execução</p>
+                                            <p class="text-base font-medium" id="last-process">-</p>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div class="flex-1 flex flex-col">
+                                <div class="bg-gray-50 rounded-lg p-6 mb-4 flex-1">
+                                    <p class="text-sm font-medium mb-2">Informações do Processo</p>
+                                    <p class="text-xs text-gray-500">
+                                        O processo de matching analisa as prospecções disponíveis no sistema e identifica potenciais compatibilidades com base nos critérios configurados. 
+                                        Os resultados ficarão disponíveis para download após a conclusão do processamento.
+                                    </p>
+                                </div>
                                 
-                                <div class="mt-auto">
-                                    <button type="submit" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                        <i class="fas fa-upload mr-2"></i>
-                                        <span>Enviar Validados</span>
+                                <div class="flex space-x-4">
+                                    <button id="start-process" class="flex-1 bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
+                                        <i class="fas fa-play mr-2"></i>
+                                        <span>Iniciar Processo</span>
                                     </button>
+                                    
+                                    <a href="/download_matches_results" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 px-4 rounded-lg hover:from-blue-600 hover:to-blue-800 transition duration-300 font-medium flex items-center justify-center">
+                                        <i class="fas fa-download mr-2"></i>
+                                        <span>Baixar Resultados</span>
+                                    </a>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <!-- Download Final Matches -->
-                    <div class="bg-white rounded-xl shadow-card overflow-hidden transition-all duration-300 hover:shadow-lg">
-                        <div class="p-6 flex flex-col h-full">
-                            <div class="mb-4 flex items-center">
-                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                                    <i class="fas fa-trophy"></i>
-                                </div>
-                                <h2 class="ml-3 text-xl font-semibold">Matches Finais</h2>
-                            </div>
-                            <p class="text-gray-600 text-sm mb-4">Baixe os resultados finais após validação</p>
-                            
-                            <div class="flex items-center bg-gray-50 rounded-lg p-4 mb-4 flex-1">
-                                <div class="flex-1 mr-4">
-                                    <p class="text-sm font-medium">Matches finalizados</p>
-                                    <p class="text-xs text-gray-500 mt-1">Última atualização: Automática</p>
-                                </div>
-                                <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center text-green-600">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                            </div>
-
-                            
-                            <div class="mt-auto">
-                                <a href="/download_final_matches" class="w-full bg-gradient-to-r from-brand-600 to-brand-900 text-white py-3 px-4 rounded-lg hover:from-brand-700 hover:to-brand-800 transition duration-300 font-medium flex items-center justify-center">
-                                    <i class="fas fa-download mr-2"></i>
-                                    <span>Baixar Finais</span>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -362,24 +309,6 @@
         prospecRemove.addEventListener('click', function() {
             prospecUpload.value = '';
             prospecFileInfo.classList.add('hidden');
-        });
-        
-        // Validated File Upload Handling
-        const validatedUpload = document.getElementById('validated-upload');
-        const validatedFileInfo = document.getElementById('validated-file-info');
-        const validatedFileName = document.getElementById('validated-file-name');
-        const validatedRemove = document.getElementById('validated-remove');
-        
-        validatedUpload.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                validatedFileName.textContent = this.files[0].name;
-                validatedFileInfo.classList.remove('hidden');
-            }
-        });
-        
-        validatedRemove.addEventListener('click', function() {
-            validatedUpload.value = '';
-            validatedFileInfo.classList.add('hidden');
         });
         
         // Fetch statistics about SharePoint consolidation
@@ -523,6 +452,48 @@
                     `;
                 });
         }
+        
+        // Iniciar Processo de Matching
+        const startProcessBtn = document.getElementById('start-process');
+        startProcessBtn.addEventListener('click', function() {
+            const processStatus = document.getElementById('process-status');
+            
+            // Mudar status para "Em processamento"
+            processStatus.textContent = "Em processamento...";
+            
+            // Desabilitar botão durante o processamento
+            startProcessBtn.disabled = true;
+            startProcessBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Simular requisição para iniciar o processo
+            fetch('/api/start_matching_process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Erro ao iniciar processo:', data.error);
+                    processStatus.textContent = "Falha ao iniciar";
+                    return;
+                }
+                
+                // Atualizar status e última execução
+                processStatus.textContent = "Concluído";
+                document.getElementById('last-process').textContent = new Date().toLocaleString('pt-BR');
+            })
+            .catch(error => {
+                console.error('Erro na requisição:', error);
+                processStatus.textContent = "Erro";
+            })
+            .finally(() => {
+                // Reabilitar botão
+                startProcessBtn.disabled = false;
+                startProcessBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        });
         
         // Call on page load
         document.addEventListener('DOMContentLoaded', function() {
