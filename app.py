@@ -15,8 +15,11 @@ import json
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-# Importar módulos do SharePoint
+# Importar módulos
 from office365_api.sharepoint_client import SharePointClient
+from sharepoint_matching import SharePointMatcher
+from routes.download_routes import register_download_routes
+from routes.api_routes import register_api_routes
 
 app = Flask(__name__)
 app.secret_key = 'chave-secreta-para-desenvolvimento'  # Substitua por uma chave segura em produção
@@ -36,6 +39,13 @@ SHAREPOINT_FILE_PATH = 'General/Lucas Pinheiro/scriptGerem/prospec_consolidado.x
 SHAREPOINT_LOGS_PATH = 'General/Lucas Pinheiro/scriptGerem/logs.xlsx'
 SHAREPOINT_UPLOADS_PATH = 'General/Lucas Pinheiro/scriptGerem/uploads'
 SHAREPOINT_METADATA_PATH = 'General/Lucas Pinheiro/scriptGerem/metadata.json'
+
+# Registrar rotas de download e API
+app = register_download_routes(app)
+app = register_api_routes(app)
+
+# Configurar o método get_sharepoint_client como um método do app
+app.get_sharepoint_client = lambda: get_sharepoint_client()
 
 def allowed_file(filename):
     return '.' in filename and \

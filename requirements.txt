@@ -7,3 +7,4 @@ werkzeug
 office365-rest-python-client
 pyinstaller
 pywin32
+fuzzywuzzy
