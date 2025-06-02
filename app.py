@@ -17,7 +17,7 @@ sys.path.append(current_dir)
 
 # Importar módulos
 from office365_api.sharepoint_client import SharePointClient
-from sharepoint_matching import SharePointMatcher
+from routes.sharepoint_matching import SharePointMatcher
 from routes.download_routes import register_download_routes
 from routes.api_routes import register_api_routes
 

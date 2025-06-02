@@ -29,7 +29,7 @@ def register_api_routes(app):
             )
             
             # Create an instance of SharePointMatcher
-            from sharepoint_matching import SharePointMatcher
+            from routes.sharepoint_matching import SharePointMatcher
             sharepoint_matcher = SharePointMatcher(app.config)
             
             # Set the SharePoint client for the matcher
